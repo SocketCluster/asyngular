@@ -1,0 +1,26 @@
+{
+  "name": "asyngular",
+  "version": "1.0.0",
+  "description": "Highly scalable realtime framework with support for async/await",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/SocketCluster/asyngular.git"
+  },
+  "keywords": [
+    "socketcluster",
+    "async",
+    "await",
+    "realtime"
+  ],
+  "author": "Jonathan Gros-Dubois",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/SocketCluster/asyngular/issues"
+  },
+  "homepage": "https://github.com/SocketCluster/asyngular#readme",
+  "dependencies": {}
+}
