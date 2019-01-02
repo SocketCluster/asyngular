@@ -1,17 +1,17 @@
 apiVersion: extensions/v1beta1
 kind: Deployment
 metadata:
-  name: scc-state
+  name: agc-state
 spec:
   replicas: 1 # Leave this as 1 - This service is a singleton.
   template:
     metadata:
       labels:
-        app: scc-state
+        app: agc-state
     spec:
       containers:
-      - name: scc-state
-        image: socketcluster/scc-state:v6.1.0
+      - name: agc-state
+        image: socketcluster/agc-state:v1.0.0
         ports:
         - containerPort: 7777
         livenessProbe:

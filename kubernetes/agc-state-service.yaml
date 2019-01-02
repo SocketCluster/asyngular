@@ -1,12 +1,12 @@
 apiVersion: v1
 kind: Service
 metadata:
-  name: scc-state
+  name: agc-state
   labels:
-    app: scc-state
+    app: agc-state
 spec:
   ports:
   - port: 7777
     targetPort: 7777
   selector:
-    app: scc-state
+    app: agc-state
