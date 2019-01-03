@@ -1,13 +1,16 @@
-apiVersion: extensions/v1beta1
+apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: agc-broker
 spec:
   replicas: 1
+  selector:
+    matchLabels:
+      component: agc-broker
   template:
     metadata:
       labels:
-        app: agc-broker
+        component: agc-broker
     spec:
       containers:
       - name: agc-broker

@@ -1,13 +1,16 @@
-apiVersion: extensions/v1beta1
+apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: agc-worker
 spec:
   replicas: 1
+  selector:
+    matchLabels:
+      component: agc-worker
   template:
     metadata:
       labels:
-        app: agc-worker
+        component: agc-worker
     spec:
       containers:
       - name: agc-worker
