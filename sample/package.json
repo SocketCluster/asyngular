@@ -9,6 +9,7 @@
     }
   ],
   "dependencies": {
+    "agc-broker-client": "^1.0.3",
     "asyngular-client": "^1.1.0",
     "asyngular-server": "^1.0.5",
     "chokidar-cli": "^1.2.1",
@@ -18,7 +19,6 @@
     "morgan": "1.7.0",
     "sc-errors": "^1.4.1",
     "sc-framework-health-check": "^2.0.0",
-    "scc-broker-client": "^6.1.0",
     "serve-static": "1.13.2"
   },
   "keywords": [
@@ -31,6 +31,6 @@
   "readmeFilename": "README.md",
   "scripts": {
     "start": "node server.js",
-    "start:watch": "./node_modules/chokidar-cli/index.js '**/*.js' -i '/^public\//' -c 'npm run start'"
+    "start:watch": "./node_modules/chokidar-cli/index.js '**/*.js' -i '/^public//' -c 'npm run start'"
   }
 }

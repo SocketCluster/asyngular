@@ -6,11 +6,13 @@ const serveStatic = require('serve-static');
 const path = require('path');
 const morgan = require('morgan');
 const healthChecker = require('sc-framework-health-check');
+const agcBrokerClient = require('agc-broker-client');
 
 const ENVIRONMENT = process.env.ENV || 'dev';
 const ASYNGULAR_PORT = process.env.ASYNGULAR_PORT || 8000;
 const ASYNGULAR_WS_ENGINE = process.env.ASYNGULAR_WS_ENGINE || 'ws';
 const ASYNGULAR_SOCKET_CHANNEL_LIMIT = Number(process.env.ASYNGULAR_SOCKET_CHANNEL_LIMIT) || 1000;
+
 const AGC_STATE_SERVER_HOST = process.env.AGC_STATE_SERVER_HOST || null;
 const AGC_STATE_SERVER_PORT = process.env.AGC_STATE_SERVER_PORT || null;
 const AGC_MAPPING_ENGINE = process.env.AGC_MAPPING_ENGINE || null;
@@ -61,4 +63,19 @@ function colorText(message, color) {
     return `\x1b[${color}m${message}\x1b[0m`;
   }
   return message;
+}
+
+// Setup broker client to connect to the Asyngular cluster (AGC).
+if (AGC_STATE_SERVER_HOST) {
+  // TODO 2
+  agcBrokerClient.attach(agServer.brokerEngine, {
+    stateServerHost: AGC_STATE_SERVER_HOST,
+    stateServerPort: AGC_STATE_SERVER_PORT,
+    mappingEngine: AGC_MAPPING_ENGINE,
+    clientPoolSize: AGC_CLIENT_POOL_SIZE,
+    authKey: AGC_AUTH_KEY,
+    stateServerConnectTimeout: AGC_STATE_SERVER_CONNECT_TIMEOUT,
+    stateServerAckTimeout: AGC_STATE_SERVER_ACK_TIMEOUT,
+    stateServerReconnectRandomness: AGC_STATE_SERVER_RECONNECT_RANDOMNESS
+  });
 }

@@ -2,7 +2,7 @@
   "name": "asyngular",
   "version": "1.0.0",
   "description": "Highly scalable realtime framework with support for async/await",
-  "main": "index.js",
+  "main": "bin/cli.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
