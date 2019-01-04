@@ -22,5 +22,9 @@
     "url": "https://github.com/SocketCluster/asyngular/issues"
   },
   "homepage": "https://github.com/SocketCluster/asyngular#readme",
-  "dependencies": {}
+  "dependencies": {
+    "fs-extra": "^7.0.1",
+    "inquirer": "^6.2.1",
+    "minimist": "^1.2.0"
+  }
 }
