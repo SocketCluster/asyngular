@@ -36,21 +36,21 @@ let parsePackageFile = function (moduleDir) {
 };
 
 let errorMessage = function (message) {
-  console.log('\x1b[31m[Error]\x1b[0m ' + message);
+  console.log(`\x1b[31m[Error]\x1b[0m ${message}`);
 };
 
 let successMessage = function (message) {
-  console.log('\x1b[32m[Success]\x1b[0m ' + message);
+  console.log(`\x1b[32m[Success]\x1b[0m ${message}`);
 };
 
 let warningMessage = function (message) {
-  console.log('\x1b[33m[Warning]\x1b[0m ' + message);
+  console.log(`\x1b[33m[Warning]\x1b[0m ${message}`);
 };
 
 let showCorrectUsage = function () {
-  console.log('Usage: socketcluster [options] [command]\n');
+  console.log('Usage: asyngular [options] [command]\n');
   console.log('Options:');
-  console.log("  -v            Get the version of the current SocketCluster installation");
+  console.log("  -v            Get the version of the current Asyngular installation");
   console.log('  --help        Get info on how to use this command');
   console.log('  --force       Force all necessary directory modifications without prompts');
   console.log();
@@ -59,7 +59,9 @@ let showCorrectUsage = function () {
 };
 
 let failedToRemoveDirMessage = function (dirPath) {
-  errorMessage('Failed to remove existing directory at ' + dirPath + '. This directory may be used by another program or you may not have the permission to remove it.');
+  errorMessage(
+    `Failed to remove existing directory at ${dirPath}. This directory may be used by another program or you may not have the permission to remove it.`
+  );
 };
 
 let failedToCreateMessage = function () {
@@ -115,13 +117,13 @@ if (argv.v) {
 
 let wd = process.cwd();
 
-let sampleDir = __dirname + '/../sample';
-let destDir = path.normalize(wd + '/' + arg1);
-let clientFileSourcePath = path.normalize(destDir + '/node_modules/socketcluster-client/socketcluster.js');
-let clientFileDestPath = path.normalize(destDir + '/public/socketcluster.js');
+let sampleDir = `${__dirname}/../sample`;
+let destDir = path.normalize(`${wd}/${arg1}`);
+let clientFileSourcePath = path.normalize(`${destDir}/node_modules/asyngular-client/asyngular-client.js`);
+let clientFileDestPath = path.normalize(`${destDir}/public/asyngular-client.js`);
 
 let createFail = function () {
-  errorMessage("Failed to create SocketCluster sample app.");
+  errorMessage('Failed to create Asyngular sample app.');
   process.exit();
 };
 
@@ -146,14 +148,15 @@ let createSuccess = function () {
 
   npmProcess.on('close', function (code) {
     if (code) {
-      errorMessage('Failed to install npm dependencies. Exited with code ' + code + '.');
+      errorMessage(`Failed to install npm dependencies. Exited with code ${code}.`);
     } else {
       try {
         fs.writeFileSync(clientFileDestPath, fs.readFileSync(clientFileSourcePath));
-        successMessage("SocketCluster sample '" + destDir + "' was setup successfully.");
+        successMessage(`Asyngular sample "${destDir}" was setup successfully.`);
       } catch (err) {
-        warningMessage("Failed to copy file from '" + clientFileSourcePath + "' to '" +
-          clientFileDestPath + "' - Try copying it manually.");
+        warningMessage(
+          `Failed to copy file from "${clientFileSourcePath}" to "${clientFileDestPath}" - Try copying it manually.`
+        );
       }
     }
     process.exit(code);
@@ -175,7 +178,7 @@ let confirmReplaceSetup = function (confirm) {
       createFail();
     }
   } else {
-    errorMessage("SocketCluster 'create' action was aborted.");
+    errorMessage('Asyngular "create" action was aborted.');
     process.exit();
   }
 };
@@ -186,7 +189,7 @@ if (command === 'create') {
       if (force) {
         confirmReplaceSetup(true);
       } else {
-        let message = "There is already a directory at " + destDir + '. Do you want to overwrite it?';
+        let message = `There is already a directory at ${destDir}. Do you want to overwrite it?`;
         promptConfirm(message, confirmReplaceSetup);
       }
     } else {
@@ -198,12 +201,12 @@ if (command === 'create') {
       }
     }
   } else {
-    errorMessage("The 'create' command requires a valid <appname> as argument.");
+    errorMessage('The "create" command requires a valid <appname> as argument.');
     showCorrectUsage();
     process.exit();
   }
 } else {
-  errorMessage("'" + command + "' is not a valid SocketCluster command.");
+  errorMessage(`"${command}" is not a valid Asyngular command.`);
   showCorrectUsage();
   process.exit();
 }
