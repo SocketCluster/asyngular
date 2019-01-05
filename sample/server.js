@@ -1,5 +1,5 @@
 const http = require('http');
-const emtase = require('emtase');
+const eetase = require('eetase');
 const asyngularServer = require('asyngular-server');
 const express = require('express');
 const serveStatic = require('serve-static');
@@ -28,7 +28,7 @@ const AGC_STATE_SERVER_RECONNECT_RANDOMNESS = Number(process.env.AGC_STATE_SERVE
 const AGC_PUB_SUB_BATCH_DURATION = Number(process.env.AGC_PUB_SUB_BATCH_DURATION) || null;
 const AGC_BROKER_RETRY_DELAY = Number(process.env.AGC_BROKER_RETRY_DELAY) || null;
 
-let httpServer = emtase(http.createServer());
+let httpServer = eetase(http.createServer());
 let agServer = asyngularServer.attach(httpServer);
 
 let expressApp = express();
