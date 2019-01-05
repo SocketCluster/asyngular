@@ -27,8 +27,16 @@ const AGC_STATE_SERVER_RECONNECT_RANDOMNESS = Number(process.env.AGC_STATE_SERVE
 const AGC_PUB_SUB_BATCH_DURATION = Number(process.env.AGC_PUB_SUB_BATCH_DURATION) || null;
 const AGC_BROKER_RETRY_DELAY = Number(process.env.AGC_BROKER_RETRY_DELAY) || null;
 
+let agOptions;
+
+if (process.env.ASYNGULAR_OPTIONS) {
+  agOptions = JSON.parse(process.env.ASYNGULAR_OPTIONS);
+} else {
+  agOptions = {};
+}
+
 let httpServer = eetase(http.createServer());
-let agServer = asyngularServer.attach(httpServer);
+let agServer = asyngularServer.attach(httpServer, agOptions);
 
 let expressApp = express();
 if (ENVIRONMENT === 'dev') {
