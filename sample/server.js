@@ -5,6 +5,7 @@ const express = require('express');
 const serveStatic = require('serve-static');
 const path = require('path');
 const morgan = require('morgan');
+const uuid = require('uuid');
 const healthChecker = require('sc-framework-health-check');
 const agcBrokerClient = require('agc-broker-client');
 
@@ -13,6 +14,7 @@ const ASYNGULAR_PORT = process.env.ASYNGULAR_PORT || 8000;
 const ASYNGULAR_WS_ENGINE = process.env.ASYNGULAR_WS_ENGINE || 'ws';
 const ASYNGULAR_SOCKET_CHANNEL_LIMIT = Number(process.env.ASYNGULAR_SOCKET_CHANNEL_LIMIT) || 1000;
 
+const AGC_INSTANCE_ID = uuid.v4();
 const AGC_STATE_SERVER_HOST = process.env.AGC_STATE_SERVER_HOST || null;
 const AGC_STATE_SERVER_PORT = process.env.AGC_STATE_SERVER_PORT || null;
 const AGC_MAPPING_ENGINE = process.env.AGC_MAPPING_ENGINE || null;
@@ -23,6 +25,8 @@ const AGC_INSTANCE_IP_FAMILY = process.env.AGC_INSTANCE_IP_FAMILY || null;
 const AGC_STATE_SERVER_CONNECT_TIMEOUT = Number(process.env.AGC_STATE_SERVER_CONNECT_TIMEOUT) || null;
 const AGC_STATE_SERVER_ACK_TIMEOUT = Number(process.env.AGC_STATE_SERVER_ACK_TIMEOUT) || null;
 const AGC_STATE_SERVER_RECONNECT_RANDOMNESS = Number(process.env.AGC_STATE_SERVER_RECONNECT_RANDOMNESS) || null;
+const AGC_PUB_SUB_BATCH_DURATION = Number(process.env.AGC_PUB_SUB_BATCH_DURATION) || null;
+const AGC_BROKER_RETRY_DELAY = Number(process.env.AGC_BROKER_RETRY_DELAY) || null;
 
 let httpServer = emtase(http.createServer());
 let agServer = asyngularServer.attach(httpServer);
@@ -65,10 +69,14 @@ function colorText(message, color) {
   return message;
 }
 
-// Setup broker client to connect to the Asyngular cluster (AGC).
 if (AGC_STATE_SERVER_HOST) {
-  // TODO 2
+  // Setup broker client to connect to the Asyngular cluster (AGC).
   agcBrokerClient.attach(agServer.brokerEngine, {
+    instanceId: AGC_INSTANCE_ID,
+    instancePort: ASYNGULAR_PORT,
+    instanceIp: AGC_INSTANCE_IP,
+    instanceIpFamily: AGC_INSTANCE_IP_FAMILY,
+    pubSubBatchDuration: AGC_PUB_SUB_BATCH_DURATION,
     stateServerHost: AGC_STATE_SERVER_HOST,
     stateServerPort: AGC_STATE_SERVER_PORT,
     mappingEngine: AGC_MAPPING_ENGINE,
@@ -76,6 +84,7 @@ if (AGC_STATE_SERVER_HOST) {
     authKey: AGC_AUTH_KEY,
     stateServerConnectTimeout: AGC_STATE_SERVER_CONNECT_TIMEOUT,
     stateServerAckTimeout: AGC_STATE_SERVER_ACK_TIMEOUT,
-    stateServerReconnectRandomness: AGC_STATE_SERVER_RECONNECT_RANDOMNESS
+    stateServerReconnectRandomness: AGC_STATE_SERVER_RECONNECT_RANDOMNESS,
+    brokerRetryDelay: AGC_BROKER_RETRY_DELAY
   });
 }
