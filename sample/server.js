@@ -6,7 +6,6 @@ const serveStatic = require('serve-static');
 const path = require('path');
 const morgan = require('morgan');
 const uuid = require('uuid');
-const healthChecker = require('sc-framework-health-check');
 const agcBrokerClient = require('agc-broker-client');
 
 const ENVIRONMENT = process.env.ENV || 'dev';
@@ -40,7 +39,9 @@ if (ENVIRONMENT === 'dev') {
 expressApp.use(serveStatic(path.resolve(__dirname, 'public')));
 
 // Add GET /health-check express route
-healthChecker.attach(agServer, expressApp);
+expressApp.get('/health-check', (req, res) => {
+  res.status(200).send('OK');
+});
 
 // HTTP request handling loop.
 (async () => {
