@@ -14,7 +14,7 @@
     "asyngular-server": "^1.0.5",
     "chokidar-cli": "^1.2.1",
     "connect": "3.6.6",
-    "emtase": "^1.0.4",
+    "eetase": "^1.0.4",
     "express": "4.16.3",
     "morgan": "1.7.0",
     "sc-errors": "^1.4.1",
