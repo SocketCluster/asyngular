@@ -10,8 +10,8 @@
   ],
   "dependencies": {
     "agc-broker-client": "^1.0.4",
-    "asyngular-client": "^1.1.1",
-    "asyngular-server": "^1.1.0",
+    "asyngular-client": "^1.1.3",
+    "asyngular-server": "^1.1.1",
     "chokidar-cli": "^1.2.1",
     "connect": "^3.6.6",
     "eetase": "^1.0.4",
