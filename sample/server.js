@@ -12,6 +12,7 @@ const ENVIRONMENT = process.env.ENV || 'dev';
 const ASYNGULAR_PORT = process.env.ASYNGULAR_PORT || 8000;
 const ASYNGULAR_WS_ENGINE = process.env.ASYNGULAR_WS_ENGINE || 'ws';
 const ASYNGULAR_SOCKET_CHANNEL_LIMIT = Number(process.env.ASYNGULAR_SOCKET_CHANNEL_LIMIT) || 1000;
+const ASYNGULAR_LOG_LEVEL = process.env.ASYNGULAR_LOG_LEVEL || 2;
 
 const AGC_INSTANCE_ID = uuid.v4();
 const AGC_STATE_SERVER_HOST = process.env.AGC_STATE_SERVER_HOST || null;
@@ -67,9 +68,25 @@ expressApp.get('/health-check', (req, res) => {
 
 httpServer.listen(ASYNGULAR_PORT);
 
-console.log(
-  `   ${colorText('[Active]', 32)} Asyngular worker with PID ${process.pid} is listening on port ${ASYNGULAR_PORT}`
-);
+if (ASYNGULAR_LOG_LEVEL >= 1) {
+  (async () => {
+    for await (let {error} of agServer.listener('error')) {
+      console.error(error);
+    }
+  })();
+}
+
+if (ASYNGULAR_LOG_LEVEL >= 2) {
+  console.log(
+    `   ${colorText('[Active]', 32)} Asyngular worker with PID ${process.pid} is listening on port ${ASYNGULAR_PORT}`
+  );
+
+  (async () => {
+    for await (let {warning} of agServer.listener('warning')) {
+      console.warn(warning);
+    }
+  })();
+}
 
 function colorText(message, color) {
   if (color) {
@@ -80,7 +97,7 @@ function colorText(message, color) {
 
 if (AGC_STATE_SERVER_HOST) {
   // Setup broker client to connect to the Asyngular cluster (AGC).
-  agcBrokerClient.attach(agServer.brokerEngine, {
+  let agcClient = agcBrokerClient.attach(agServer.brokerEngine, {
     instanceId: AGC_INSTANCE_ID,
     instancePort: ASYNGULAR_PORT,
     instanceIp: AGC_INSTANCE_IP,
@@ -96,4 +113,13 @@ if (AGC_STATE_SERVER_HOST) {
     stateServerReconnectRandomness: AGC_STATE_SERVER_RECONNECT_RANDOMNESS,
     brokerRetryDelay: AGC_BROKER_RETRY_DELAY
   });
+
+  if (ASYNGULAR_LOG_LEVEL >= 1) {
+    (async () => {
+      for await (let {error} of agcClient.listener('error')) {
+        error.name = 'AGCError';
+        console.error(error);
+      }
+    })();
+  }
 }
